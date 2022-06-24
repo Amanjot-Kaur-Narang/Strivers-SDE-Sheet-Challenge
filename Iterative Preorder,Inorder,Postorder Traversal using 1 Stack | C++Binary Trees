@@ -1,0 +1,85 @@
+#include<stack>
+/************************************************************
+
+    Following is the Binary Tree node structure:
+
+    class BinaryTreeNode
+    {
+    public :
+        T data;
+        BinaryTreeNode<T> *left;
+        BinaryTreeNode<T> *right;
+
+        BinaryTreeNode(T data) {
+            this -> data = data;
+            left = NULL;
+            right = NULL;
+        }
+    };
+
+
+************************************************************/
+
+vector<vector<int>> getTreeTraversal(BinaryTreeNode<int> *root){
+    // Write your code here.
+    //for preorder
+    vector<vector<int>> ans;
+    if(root==NULL) return ans;
+    vector<int> inorder;
+    
+    stack<BinaryTreeNode<int> *> st1;
+    BinaryTreeNode<int> *node1=root;
+  
+    
+    while(true){
+        if(node1!=NULL){
+            st1.push(node1);
+            node1=node1->left;
+        }
+        else{
+            if(st1.empty()==true) break;
+              
+                node1=st1.top();
+              inorder.push_back(node1->data);
+                st1.pop();
+                node1=node1->right;    
+                
+            
+        }
+      
+    }
+      ans.push_back(inorder);
+    vector<int> preorder;
+    stack<BinaryTreeNode<int> *> st2;BinaryTreeNode<int> *node2=root;
+    st2.push(node2);
+    while(!st2.empty()){
+        node2=st2.top();
+        st2.pop();
+        preorder.push_back(node2->data);
+        if(node2->right!=NULL)st2.push(node2->right);
+        if(node2->left!=NULL )st2.push(node2->left);
+        
+    }
+    ans.push_back(preorder);
+    vector<int> postorder;
+      stack<BinaryTreeNode<int> *> st3;stack<BinaryTreeNode<int> *> st4;
+    BinaryTreeNode<int> *node3=root;
+          st3.push(node3);
+    while(!st3.empty()){
+        node3=st3.top();st3.pop();
+        st4.push(node3);
+        if(node3->left!=NULL){
+            st3.push(node3->left);
+        }
+         if(node3->right!=NULL){
+            st3.push(node3->right);
+        }
+    }
+    while(!st4.empty()){
+        
+        postorder.push_back(st4.top()->data);
+        st4.pop();
+    }
+    ans.push_back(postorder);
+    return ans;
+}
