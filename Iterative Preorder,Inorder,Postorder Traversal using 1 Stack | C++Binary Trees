@@ -60,6 +60,7 @@ vector<vector<int>> getTreeTraversal(BinaryTreeNode<int> *root){
         if(node2->left!=NULL )st2.push(node2->left);
         
     }
+    //postorder using 2 stacks
     ans.push_back(preorder);
     vector<int> postorder;
       stack<BinaryTreeNode<int> *> st3;stack<BinaryTreeNode<int> *> st4;
@@ -81,5 +82,33 @@ vector<vector<int>> getTreeTraversal(BinaryTreeNode<int> *root){
         st4.pop();
     }
     ans.push_back(postorder);
+    //postorder using 1 stack
+     vector<int> postorder;
+      stack<BinaryTreeNode<int> *> st3;stack<BinaryTreeNode<int> *> st4;
+    BinaryTreeNode<int> *node3=root;  
+  while(node3!=NULL|| !st3.empty()){
+      if(node3!=NULL){
+          st3.push(node3);
+          node3=node3->left;
+      }
+      else{
+        BinaryTreeNode<int>*  temp=st3.top()->right;
+          if(temp==NULL){
+              temp=st3.top();
+              st3.pop();
+              postorder.push_back(temp->data);
+              while(!st3.empty() && temp==st3.top()->right){
+          temp=st3.top();
+          st3.pop();
+          postorder.push_back(temp-> data);
+              }
+          }
+          else{
+             node3=temp; 
+          }
+      }
+  }
+    ans.push_back(postorder);
+    
     return ans;
 }
